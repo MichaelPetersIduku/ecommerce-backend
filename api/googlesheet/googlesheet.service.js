@@ -40,11 +40,11 @@ const runBuyRequestScript = async (dataArray) => {
             // eslint-disable-next-line no-continue
             if (data[j][0] === "Storage Size") continue;
           if (k !== 0) {
-            buyRequestData.productName = productName;
+            buyRequestData.productName = productName.toLowerCase();
             // eslint-disable-next-line prefer-destructuring
-            buyRequestData.size = data[j][0];
-            buyRequestData.price = newArray[k];
-            buyRequestData.condition = productConditionArray[k-1];
+            buyRequestData.size = data[j][0].toLowerCase();
+            buyRequestData.price = newArray[k].toLowerCase();
+            buyRequestData.condition = productConditionArray[k-1].toLowerCase();
             buyRequest.push(buyRequestData);
             buyRequestData = {};
           }
@@ -82,11 +82,11 @@ const runSellRequestScript = async (dataArray) => {
             // eslint-disable-next-line no-continue
             if (data[j][0] === "Storage Size") continue;
           if (k !== 0) {
-            sellRequestData.productName = productName;
+            sellRequestData.productName = productName.toLowerCase();
             // eslint-disable-next-line prefer-destructuring
-            sellRequestData.size = data[j][0];
-            sellRequestData.price = newArray[k];
-            sellRequestData.condition = productConditionArray[k-1];
+            sellRequestData.size = data[j][0].toLowerCase();
+            sellRequestData.price = newArray[k].toLowerCase();
+            sellRequestData.condition = productConditionArray[k-1].toLowerCase();
             sellRequest.push(sellRequestData);
             sellRequestData = {};
           }

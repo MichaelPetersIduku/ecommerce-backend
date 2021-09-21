@@ -59,8 +59,25 @@ const fetchRequestsService = async (req) => {
       return serverErrorResponse(req, error);
     }
   };
+
+  const searchProductService = async (req) => {
+      try {
+          const { searchString } = req.query;
+          const searchStringArray = searchString.split(",");
+          const dbDaata = await BuyRequest.paginate({
+              productName: {$in: searchStringArray},
+            //   size: {$in: searchStringArray},
+            //   price: {$in: searchStringArray},
+            //   condition: {$in: searchStringArray}
+          })
+          return successResponse("Successful", dbDaata);
+      } catch (error) {
+          return serverErrorResponse(req, error);
+      }
+  }
   
 
 module.exports = {
   fetchRequestsService,
+  searchProductService
 };

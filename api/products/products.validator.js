@@ -7,6 +7,13 @@ const fetchProductsSchema = joi.object({
   limit: joi.string()
 });
 
+const searchProductsSchema = joi.object({
+    searchString: joi.string().required(),
+    min: joi.string(),
+    max: joi.string()
+})
+
 module.exports = {
-  fetchProductsSchema
+  fetchProductsSchema,
+  searchProductsSchema
 };
