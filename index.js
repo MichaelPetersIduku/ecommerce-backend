@@ -1,19 +1,13 @@
 const express = require("express");
 const app = express();
-const { spreadsheetRouter } = require("./api/spreadsheet/spreadsheet.route");
-const { dispatchRouter } = require("./api/dispatch/dispatch.route");
-const { automatedEventRouter } = require("./api/AutomatedEvent/AutomatedEvent.route");
 const { connectMongo } = require("./@core/database/database.mongo");
+const { googlesheetRouter } = require("./api/googlesheet/googlesheet.route");
 
 connectMongo();
 
 app.set('port', process.env.PORT || 4321);
 
-app.use("/api/v1/spreadsheet", spreadsheetRouter);
-
-app.use("/api/v1/dispatch", dispatchRouter);
-
-app.use("/api/v1/AutomatedEvent", automatedEventRouter);
+app.use("/api/v1/googlesheet", googlesheetRouter);
 
 app.get("/", (req, res) => {
   res.send({ message: "Welcome to Eze Warehouse API" });
