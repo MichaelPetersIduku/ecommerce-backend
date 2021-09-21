@@ -1,4 +1,3 @@
-const { logger } = require("firebase-functions");
 const fetch = require("node-fetch");
 const {
   APPSHEET_BASEURL,
@@ -10,19 +9,19 @@ const apiCall = async (api, body, headers, method) => {
   try {
     const payLoad = { headers, method };
     body ? (payLoad.body = JSON.stringify(body)) : payLoad;
-    logger.log("PAYLOAD", payLoad);
+    console.log("PAYLOAD", payLoad);
     const result = await fetch(api, payLoad);
-    logger.log("RESULT", result);
+    console.log("RESULT", result);
     return result;
   } catch (error) {
-    logger.error(error);
+    console.error(error);
     return { request: { api, body, headers, method }, error };
   }
 };
 
 const getRecordsAppSheet = async (tableName, selector) => {
   let url = `${APPSHEET_BASEURL}/${WAREHOUSE_APPID}/tables/${tableName}/Action`;
-  logger.log(url);
+  console.log(url);
   const body = {
     Action: "Find",
     Properties: {
@@ -36,7 +35,7 @@ const getRecordsAppSheet = async (tableName, selector) => {
     },
     Rows: [],
   };
-  logger.log(body);
+  console.log(body);
   const HEADER = {
     applicationAccessKey: WAREHOUSE_ACCESSTOKEN,
     "Content-Type": "application/json",
@@ -60,13 +59,13 @@ const updateRecordsAppSheet = async (tableName, rowsToUpdate) => {
     },
     Rows: rowsToUpdate,
   };
-  logger.log(body);
+  console.log(body);
   const HEADER = {
     applicationAccessKey: WAREHOUSE_ACCESSTOKEN,
     "Content-Type": "application/json",
   };
   let response = await apiCall(url, body, HEADER, "POST");
-  logger.log(response);
+  console.log(response);
   if (!response) response = {};
   const rows = await response.json();
   return rows;
@@ -86,7 +85,7 @@ const addRecordsAppSheet = async (tableName, rowsToAdd) => {
     },
     Rows: rowsToAdd,
   };
-  logger.log(body);
+  console.log(body);
   const HEADER = {
     applicationAccessKey: WAREHOUSE_ACCESSTOKEN,
     "Content-Type": "application/json",
