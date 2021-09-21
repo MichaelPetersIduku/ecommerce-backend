@@ -2,12 +2,15 @@ const express = require("express");
 const app = express();
 const { connectMongo } = require("./@core/database/database.mongo");
 const { googlesheetRouter } = require("./api/googlesheet/googlesheet.route");
+const { productsRouter } = require("./api/products/products.route");
 
 connectMongo();
 
 app.set('port', process.env.PORT || 4321);
 
 app.use("/api/v1/googlesheet", googlesheetRouter);
+
+app.use("/api/v1/products", productsRouter);
 
 app.get("/", (req, res) => {
   res.send({ message: "Welcome to Eze Warehouse API" });
