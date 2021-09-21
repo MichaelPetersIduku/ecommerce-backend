@@ -122,7 +122,7 @@ const runSellRequestScript = async (data) => {
     };
   }
 
-  const dbData = await SellRequest.insertMany(buyRequest);
+  const dbData = await SellRequest.insertMany(sellRequest);
 
   return dbData;
 }
