@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { controllerResponseHandler, controllerErrorHandler } = require("../../@core/common/response");
 const { saveDataToDBFromSheetService } = require("./googlesheet.service");
 

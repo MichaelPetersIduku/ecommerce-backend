@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const Router = require("express");
 const { isAuthenticated, inputValidator } = require("../../util/middleware");
 const { saveDataToDBFromSheetController } = require("./googlesheet.controller");
+
 const { runScriptSchema } = require("./googlesheet.validator");
+
 const googlesheetRouter = Router();
 
 googlesheetRouter.post(

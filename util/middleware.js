@@ -1,13 +1,17 @@
-const { encode } = require("base-64");
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-console */
+const { encode } =  require("base-64");
 const { config } = require("secreta");
 
 const { API_KEY } = config;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const inputValidator = (schema) => {
   return (req, res, next) => {
+    // eslint-disable-next-line no-restricted-syntax
     for (const [key, value] of Object.entries(schema)) {
       if (key === "body") {
-        // @ts-ignore
         const { error } = value.validate(req.body);
         if (error) {
           return res.status(400).json({
@@ -17,7 +21,6 @@ const inputValidator = (schema) => {
           });
         }
       } else if (key === "query") {
-        // @ts-ignore
         const { error } = value.validate(req.query);
         if (error) {
           return res.status(400).json({
@@ -27,10 +30,9 @@ const inputValidator = (schema) => {
           });
         }
       } else {
-        // @ts-ignore
         const { error } = value.validate(req.params);
         if (error) {
-          logger.log(error, "++++++++++++++++++++++++++++++++++++++++++");
+          console.log(error, "++++++++++++++++++++++++++++++++++++++++++");
 
           return res.status(400).json({
             status: false,
@@ -45,7 +47,7 @@ const inputValidator = (schema) => {
 };
 
 const isAuthenticated = (req, res, next) => {
-  let accessToken = req.headers.authorization;
+  const accessToken = req.headers.authorization;
   if (!accessToken) {
     return res.status(401).json({
       status: false,
@@ -56,7 +58,7 @@ const isAuthenticated = (req, res, next) => {
   try {
     const auth = accessToken.split(" ")[1];
     const token = encode(API_KEY);
-    if (auth != token) {
+    if (auth !== token) {
       return res.status(401).json({
         status: false,
         message: "invalid token",

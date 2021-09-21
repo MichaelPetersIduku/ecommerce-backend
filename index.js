@@ -1,4 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
+
 const app = express();
 const { connectMongo } = require("./@core/database/database.mongo");
 const { googlesheetRouter } = require("./api/googlesheet/googlesheet.route");
@@ -16,7 +19,7 @@ app.get("/", (req, res) => {
   res.send({ message: "Welcome to Eze Warehouse API" });
 });
 
-const server = app.listen(app.get('port'), () => {
+app.listen(app.get('port'), () => {
   console.log(
     '  App is running at http://localhost:%d in %s mode',
     app.get('port'),

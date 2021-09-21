@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { controllerResponseHandler, controllerErrorHandler } = require("../../@core/common/response");
 const { fetchRequestsService } = require("./products.service");
 

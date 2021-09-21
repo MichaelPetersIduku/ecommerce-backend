@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const controllerResponseHandler = async (response, res) => {
   const { code, status, message, data } = response;
   return res.status(code).json({ status, message, data });

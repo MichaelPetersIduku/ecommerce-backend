@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const Router = require("express");
 const { isAuthenticated, inputValidator } = require("../../util/middleware");
 const { fetchRequestsController } = require("./products.controller");
