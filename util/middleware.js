@@ -1,5 +1,4 @@
 const { encode } = require("base-64");
-const { logger } = require("firebase-functions");
 const { config } = require("secreta");
 
 const { API_KEY } = config;
@@ -11,8 +10,6 @@ const inputValidator = (schema) => {
         // @ts-ignore
         const { error } = value.validate(req.body);
         if (error) {
-          logger.log(req.body);
-          logger.log(error.message);
           return res.status(400).json({
             status: false,
             message: error.message,
