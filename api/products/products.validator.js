@@ -9,6 +9,9 @@ const fetchProductsSchema = joi.object({
 
 const searchProductsSchema = joi.object({
     searchString: joi.string().required(),
+    request: joi.string().required().allow("buyRequest", "sellRequest"),
+    limit: joi.string(),
+    page: joi.string(),
     min: joi.string(),
     max: joi.string()
 })

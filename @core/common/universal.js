@@ -17,8 +17,18 @@ const apiCall = async (api, body, headers, method) => {
   }
 };
 
-
+const reverseFormatAmount = (amountString) => {
+  let amount = amountString;
+  if (!amount.includes(".")) amount += ".00";
+  const a = 
+    `${amount
+      .toString()
+      .split(".")[0]
+      .replace(/[^0-9]+/g, "")}.${amount.toString().split(".")[1]}`;
+      return Number(a);
+};
 
 module.exports = {
-  apiCall
+  apiCall,
+  reverseFormatAmount,
 };
