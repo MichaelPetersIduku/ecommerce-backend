@@ -18,7 +18,7 @@ const fetchBuyRequests = async (req) => {
     const options = {
       page,
       limit,
-      sort: { createdAt: "desc" },
+      // sort: { createdAt: "desc" },
       collation: { locale: "en" },
     };
     const buyRequests = await BuyRequest.paginate(query, options);
@@ -37,7 +37,7 @@ const fetchSellRequests = async (req) => {
     const options = {
       page,
       limit,
-      sort: { createdAt: "desc" },
+      // sort: { createdAt: "desc" },
       collation: { locale: "en" },
     };
     const sellRequests = await SellRequest.paginate(query, options);
@@ -66,44 +66,63 @@ const fetchRequestsService = async (req) => {
 
 const searchProductService = async (req) => {
   try {
-    let { limit, page, min, max } = req.query;
-    limit = Number(limit) || 10;
-    page = Number(page) || 1;
+    let { min, max } = req.query;
+    // limit = Number(limit) || 10;
+    // page = Number(page) || 1;
     min = Number(min);
-    max = Number(max)
-    const options = {
-      page,
-      limit,
-      sort: { createdAt: "desc" },
-      collation: { locale: "en" },
-    };
+    max = Number(max);
 
-    const { searchString, request } = req.query;
-    const searchStringArray = searchString.toLowerCase().split(",");
-    const query = {
-        $or: [
-          { productName: { $in: searchStringArray } },
-          { size: { $in: searchStringArray } },
-          { price: { $in: searchStringArray } },
-          { condition: { $in: searchStringArray } },
-        ],
-      };
-    const dbData = request === "buyRequest"? await BuyRequest.paginate(query, options): await SellRequest.paginate(query, options);
-    dbData.docs = dbData.docs.reverse();
+    const { searchString, request, category } = req.query;
+    let query = {};
+    if (searchString) {
+    const searchStrArry = searchString.toLowerCase().split(",");
+    const searchStringArray = [];
+    searchStrArry.forEach(str => {
+      searchStringArray.push(str.trim())
+    })
+    console.log(searchStringArray);
+    query = {
+      $or: [
+        { productName: { $regex: searchString, $options: "i" } },
+        { size: { $in: searchStringArray } },
+        { price: { $in: searchStringArray } },
+        { condition: { $in: searchStringArray } },
+      ],
+    };
+  }
+  if (category) {
+    query = {
+         productName: category
+    };
+  }
+    let dbData =
+      request === "buyRequest"
+        ? await BuyRequest.find(query)
+        : await SellRequest.find(query);
     if (min) {
-        dbData.docs = dbData.docs.filter(product => {
-            const amount = reverseFormatAmount(product.price);
-            return amount >= min; 
-        })
+      dbData = dbData.filter((product) => {
+        const amount = reverseFormatAmount(product.price);
+        return amount >= Number(min);
+      });
     }
     if (max) {
-        dbData.docs = dbData.docs.filter(product => {
-            const amount = reverseFormatAmount(product.price);
-            return amount <= max; 
-        })
+      dbData = dbData.filter((product) => {
+        const amount = reverseFormatAmount(product.price);
+        return amount <= Number(max);
+      });
     }
-    dbData.totalDocs = dbData.docs.length;
     return successResponse("Successful", dbData);
+  } catch (error) {
+    return serverErrorResponse(req, error);
+  }
+};
+
+const fetchAllCategoryService = async (req) => {
+  try {
+    const category = await (
+      await BuyRequest.find().distinct("productName")
+    ).reverse();
+    return successResponse("Successful", category);
   } catch (error) {
     return serverErrorResponse(req, error);
   }
@@ -112,4 +131,5 @@ const searchProductService = async (req) => {
 module.exports = {
   fetchRequestsService,
   searchProductService,
+  fetchAllCategoryService,
 };

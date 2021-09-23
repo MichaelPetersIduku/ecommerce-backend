@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const Router = require("express");
 const { isAuthenticated, inputValidator } = require("../../util/middleware");
-const { fetchRequestsController, searchProductsController } = require("./products.controller");
+const { fetchRequestsController, searchProductsController, fetchAllCategoryController } = require("./products.controller");
 const { fetchProductsSchema, searchProductsSchema } = require("./products.validator");
 
 const productsRouter = Router();
@@ -12,6 +12,12 @@ productsRouter.get(
   inputValidator({query: fetchProductsSchema}),
   fetchRequestsController
 );
+
+productsRouter.get(
+  "/category",
+  isAuthenticated,
+  fetchAllCategoryController
+)
 
 productsRouter.get(
     "/search",

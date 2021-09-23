@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { controllerResponseHandler, controllerErrorHandler } = require("../../@core/common/response");
-const { fetchRequestsService, searchProductService } = require("./products.service");
+const { fetchRequestsService, searchProductService, fetchAllCategoryService } = require("./products.service");
 
 const fetchRequestsController = async (req, res) => {
   try {
@@ -20,7 +20,17 @@ const searchProductsController = async (req, res) => {
     }
   };
 
+  const fetchAllCategoryController = async (req, res) => {
+    try {
+      const response = await fetchAllCategoryService(req);
+      controllerResponseHandler(response, res);
+    } catch (error) {
+      controllerErrorHandler(error, res);
+    }
+  };
+
 module.exports = {
     fetchRequestsController,
-    searchProductsController
+    searchProductsController,
+    fetchAllCategoryController
 };

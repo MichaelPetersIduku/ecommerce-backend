@@ -1,15 +1,19 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
+const cors = require("cors");
 
-const app = express();
 const { connectMongo } = require("./@core/database/database.mongo");
 const { googlesheetRouter } = require("./api/googlesheet/googlesheet.route");
 const { productsRouter } = require("./api/products/products.route");
 
+const app = express();
+
 connectMongo();
 
 app.set('port', process.env.PORT || 4321);
+
+app.use(cors());
 
 app.use("/api/v1/googlesheet", googlesheetRouter);
 
