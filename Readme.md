@@ -1,7 +1,10 @@
 ## Description
 
-Restful API service for reading product data from google spreadsheet into mongodb database. An endpoint to read the data from the sheet is exposed to the frontend which can be triggered on demand. An endpoint which uses an enhanced search algorithm is also exposed to search for data gotten from the spreadsheet and stored in the database
-This api was built using Nodejs, Javascript, Express, MongoDb, Mongoose and code is linted using ESLint 
+Restful API service for reading product data from google spreadsheet into mongodb database. An endpoint to read the data from the sheet is exposed to the frontend which can be triggered on demand. An endpoint which uses an enhanced search algorithm is also exposed to search for data gotten from the spreadsheet and stored in the database.
+
+link to google spreadsheet: https://docs.google.com/spreadsheets/d/1StAjRtad7E1KeuEV0-QNUCxt6QeBtj-G7YSQRwSZTmk
+
+This api was built using Nodejs, Javascript, Express, MongoDb, Mongoose and code is linted using ESLint
 
 
 ## Installation
