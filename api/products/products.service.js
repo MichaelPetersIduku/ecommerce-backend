@@ -136,6 +136,7 @@ const searchProductService = async (req) => {
         return amount <= Number(max);
       });
     }
+    dbData = dbData.reverse();
     return successResponse("Successful", dbData);
   } catch (error) {
     return serverErrorResponse(req, error);
