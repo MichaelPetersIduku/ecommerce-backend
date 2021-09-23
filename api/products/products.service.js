@@ -47,7 +47,8 @@ const fetchSellRequests = async (req) => {
   }
 };
 
-const generateSearchQuery = async (searchString) => {
+const generateSearchQuery = async (searchkey) => {
+  const searchString = searchkey.toLowerCase();
   const searchStrArry = searchString.toLowerCase().split(",");
       const searchStringArray = [];
       searchStrArry.forEach((str) => {
