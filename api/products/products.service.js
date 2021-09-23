@@ -47,6 +47,44 @@ const fetchSellRequests = async (req) => {
   }
 };
 
+const generateSearchQuery = async (searchString) => {
+  const searchStrArry = searchString.toLowerCase().split(",");
+      const searchStringArray = [];
+      searchStrArry.forEach((str) => {
+        searchStringArray.push(str.trim());
+      });
+      console.log(searchStringArray);
+      const conditions = ["new", "a1", "a2", "b1", "b2", "c", "c/b", "c/d"];
+      const sizes = ["16gb", "32gb", "64gb", "128gb", "256gb", "512gb"];
+      const products = ["iphone xs max","iphone xs","iphone xr","iphone x","iphone se","iphone 8 plus","iphone 8","iphone 7 plus","iphone 7","iphone 6s plus","iphone 6s","iphone 6 plus","iphone 6",];
+      
+      const queryArray = [];
+      const conditionArray = searchStringArray.filter((i) => {
+        return conditions.includes(i);
+      });
+      const sizeArray = searchStringArray.filter((i) => {
+        return sizes.includes(i);
+      });
+      if (conditionArray.length > 0) queryArray.push({ condition: { $in: conditionArray } });
+      if (sizeArray.length > 0) queryArray.push({ size: { $in: sizeArray } });
+      if (searchStringArray.length > 1) {
+        const search = searchStringArray.filter(i => {
+          return products.includes(i);
+          });
+          queryArray.push({ productName: { $in: search } })
+      } else {
+        const search = products.filter(i => {
+          return i.includes(searchString);
+        })
+        // eslint-disable-next-line no-unused-expressions
+        search.length > 0 && queryArray.push({ productName: { $regex: searchString, $options: "i" } })
+      }
+      return {
+        $and: queryArray,
+      };
+}
+
+
 const fetchRequestsService = async (req) => {
   try {
     const { request } = req.query;
@@ -75,26 +113,13 @@ const searchProductService = async (req) => {
     const { searchString, request, category } = req.query;
     let query = {};
     if (searchString) {
-    const searchStrArry = searchString.toLowerCase().split(",");
-    const searchStringArray = [];
-    searchStrArry.forEach(str => {
-      searchStringArray.push(str.trim())
-    })
-    console.log(searchStringArray);
-    query = {
-      $or: [
-        { productName: { $regex: searchString, $options: "i" } },
-        { size: { $in: searchStringArray } },
-        { price: { $in: searchStringArray } },
-        { condition: { $in: searchStringArray } },
-      ],
-    };
-  }
-  if (category) {
-    query = {
-         productName: category
-    };
-  }
+      query = await generateSearchQuery(searchString);
+    }
+    if (category) {
+      query = {
+        productName: category,
+      };
+    }
     let dbData =
       request === "buyRequest"
         ? await BuyRequest.find(query)
